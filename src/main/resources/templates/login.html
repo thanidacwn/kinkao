@@ -14,7 +14,7 @@
 <div class="container w-50 p-3">
   <h1 class="display-5">Login</h1>
 
-  <form th:action="@{/login}" method="POST">
+  <form id="login"  th:action="@{/login}" method="POST">
     <div id="error-msg" th:if="${param.error}" class="alert alert-danger">
       Invalid username or password
     </div>
@@ -34,6 +34,7 @@
     <button id="submit-button" type="submit"
             class="btn btn-primary">Login</button>
   </form>
+
   <br>
   <h5>Single Sign-On</h5>
   <ul class="list-group">

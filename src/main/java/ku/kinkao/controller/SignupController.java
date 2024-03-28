@@ -1,33 +1,35 @@
 package ku.kinkao.controller;
 
-
-import ku.kinkao.entity.Member;
+import ku.kinkao.dto.SignupRequest;
 import ku.kinkao.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import jakarta.validation.Valid;
 
 @Controller
 public class SignupController {
 
-
     @Autowired
     private SignupService signupService;
 
-
     @GetMapping("/signup")
-    public String getSignupPage() {
+    public String getSignupPage(Model model) {
+        model.addAttribute("signupRequest", new SignupRequest());
         return "signup"; // return signup.html
     }
 
 
     @PostMapping("/signup")
-    public String signupMember(@ModelAttribute Member member, Model model) {
-
+    public String signupUser(@Valid SignupRequest member,
+                             BindingResult result, Model model) {
+        if (result.hasErrors())
+            return "signup";
 
         if (signupService.isUsernameAvailable(member.getUsername())) {
             signupService.createMember(member);
@@ -35,10 +37,7 @@ public class SignupController {
         } else {
             model.addAttribute("signupError", "Username not available");
         }
-
-
-        // return signup.html but there will be message appearing
+        model.addAttribute("signupRequest", new SignupRequest());
         return "signup";
     }
 }
-
