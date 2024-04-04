@@ -24,6 +24,8 @@ public class Member {
 
     private String email;
 
+    private String role;
+
     private Instant createdAt;
 
 
